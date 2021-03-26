@@ -58,10 +58,17 @@ public class Register extends AppCompatActivity {
                 } else if (UserId.isEmpty()) {
                     userid.setError("PLEASE Enter Your ID#");
                     userid.requestFocus();
-                } else if (Phone.isEmpty()) {
-                    userid.setError("PLEASE Enter Your Phone");
+                }
+                else if (UserId.length() >8) {
+                    userid.setError("Id should 8 digit");
                     userid.requestFocus();
-                } else if (name.isEmpty() && UserId.isEmpty() && Phone.isEmpty()) {
+                }
+                else if (Phone.isEmpty()) {
+                    ephone.setError("PLEASE Enter Your Phone");
+                    ephone.requestFocus();
+                }
+
+                else if (name.isEmpty() && UserId.isEmpty() && Phone.isEmpty()) {
 
                     Toast.makeText(Register.this, " BOTH FIELDS ARE EMPTY!!", Toast.LENGTH_SHORT).show();
 

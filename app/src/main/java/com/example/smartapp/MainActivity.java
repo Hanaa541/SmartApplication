@@ -64,6 +64,10 @@ public class MainActivity extends AppCompatActivity {
                     userid.setError("PLEASE Enter Your ID#");
                     userid.requestFocus();
                 }
+                else if (UserId.length() >8) {
+                    userid.setError("Id should 8 digit");
+                    userid.requestFocus();
+                }
 
                 else  {
 
