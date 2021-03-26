@@ -78,9 +78,12 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onDataChange(DataSnapshot snapshot) {
                             if (snapshot.child(UserId).exists() ) {
+                              //  DataSnapshot childSnapshot = (DataSnapshot) snapshot.getValue();
+                                User post = snapshot.child(UserId).getValue(User.class);
 
-                                Toast.makeText(MainActivity.this, "Welcome to our Smart App" +Mobile , Toast.LENGTH_SHORT).show();
-                                String value=Mobile;
+                                Toast.makeText(MainActivity.this, "Welcome to our Smart App" +post , Toast.LENGTH_SHORT).show();
+                                String value = String.valueOf( post.phone);
+
                                 Intent i = new Intent(MainActivity.this, VerifyPhone.class);
                                 i.putExtra("mobile",value);
                                 startActivity(i);
