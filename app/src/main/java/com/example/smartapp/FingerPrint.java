@@ -92,8 +92,7 @@ public class FingerPrint extends AppCompatActivity {
 
                             FingerprintHandler helper = new FingerprintHandler(this);
                             helper.startAuth(fingerprintManager, cryptoObject);
-                            Intent i = new Intent(FingerPrint.this, Profile.class);
-                            startActivity(i);
+
 
                         }
                     }
