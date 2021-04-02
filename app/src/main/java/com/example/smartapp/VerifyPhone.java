@@ -49,7 +49,7 @@ public class VerifyPhone extends AppCompatActivity {
 
 
 
-        sendVerificationCode( "+966"+phonenum);
+        sendVerificationCode( "+970"+phonenum);
 
 
         verifyOTPBtn.setOnClickListener(new View.OnClickListener() {
@@ -75,7 +75,7 @@ public class VerifyPhone extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
 
-                            Intent i = new Intent(VerifyPhone.this, Profile.class);
+                            Intent i = new Intent(VerifyPhone.this, FingerPrint.class);
                             startActivity(i);
                             finish();
                         } else {
