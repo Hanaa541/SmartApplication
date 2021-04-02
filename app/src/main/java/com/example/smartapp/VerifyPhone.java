@@ -49,7 +49,7 @@ public class VerifyPhone extends AppCompatActivity {
 
 
 
-        sendVerificationCode( "+970"+phonenum);
+        sendVerificationCode( "+966"+phonenum);
 
 
         verifyOTPBtn.setOnClickListener(new View.OnClickListener() {
