@@ -48,9 +48,9 @@ public class VerifyPhone extends AppCompatActivity {
         edtOTP = findViewById(R.id.idEdtOtp);
         verifyOTPBtn = findViewById(R.id.idBtnVerify);
 
-        System.out.println(userid+ "fffffffffffffffff");
 
-        sendVerificationCode( "+970"+phonenum);
+
+        sendVerificationCode( "+966"+phonenum);
 
 
         verifyOTPBtn.setOnClickListener(new View.OnClickListener() {

@@ -91,7 +91,7 @@ public class Register extends AppCompatActivity {
 
                                         .setTitle("Warn")
 
-                                        .setMessage("This Account is exist try again")
+                                        .setMessage("This Id is exist try again")
                                         .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -111,14 +111,15 @@ public class Register extends AppCompatActivity {
 
                                         .setTitle("Message")
 
-                                        .setMessage("You were Add Succsefully")
+                                        .setMessage("You Are Add Succsefully")
                                         .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialogInterface, int i) {
 
                                                 String value=UserId;
-
+//source -dest
                                                 Intent page = new Intent(Register.this, SecurityCode.class);
+                                                //passing data
                                                page.putExtra("id",value);
                                                 startActivity(page);
 
@@ -184,7 +185,7 @@ public class Register extends AppCompatActivity {
         if (val.isEmpty()) {
             userid.setError("Please Enter Your ID");
             return false;
-        } else if(val.length() >8){
+        } else if(  val.length() != 8){
             userid.setError("Id should 8 digit");
             return false; }
 

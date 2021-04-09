@@ -34,8 +34,9 @@ public class SecurityCode extends AppCompatActivity {
 
         mDatabase = FirebaseDatabase.getInstance();
         mDatabaseReference = mDatabase.getReference();
-
+// الواجهة الي جاي منها
         Intent intent = getIntent();
+        //المعلومات الي في الواجهة عن طريق الكي
         String id = intent.getStringExtra("id");
 
 

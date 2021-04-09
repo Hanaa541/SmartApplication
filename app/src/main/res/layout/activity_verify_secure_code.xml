@@ -56,7 +56,7 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="10dp"
                         android:clickable="true"
-
+android:hint="Code"
                         android:ems="10"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="25sp"

@@ -27,18 +27,22 @@ public class VerifySecureCode extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verify_secure_code);
+        // للوصول للبتن
         btnverify = (Button) findViewById(R.id.BtnVerify);
+        //للوصول للفيلد
         editcode = (EditText) findViewById(R.id.code);
-
+// جبنا اليوزر
         Intent intent = getIntent();
         userid  = intent.getStringExtra("id");
-        System.out.println(userid+ "sssssssssssssssssssssssssssssssssssssss");
 
+//للوصول للداتابيز
         mDatabase = FirebaseDatabase.getInstance();
         mDatabaseReference = mDatabase.getReference();
+         //لمايضغط على البتن
         btnverify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //التاكد من انو الفيلد مش فارغ
                 String code =editcode.getText().toString();
                 if(code.isEmpty()){
                     editcode.setError("Please Enter Your SecureCode");
@@ -48,22 +52,21 @@ public class VerifySecureCode extends AppCompatActivity {
 
                     mDatabaseReference = mDatabase.getReference();
                     DatabaseReference users = mDatabaseReference.child("users");
+
+
                     users.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot snapshot) {
-                            if (snapshot.child(userid).exists() ) {
 
 
+                                // استرجاع الكود الموجود في الداتابيز الخاص ب الايدي
+                            // value =قيمة السيكيور كود الخاصة باليوزر
                                 String value = snapshot.child(userid).child("SecureCode").getValue(String.class);
 
-
-                                 if(value.equals(code)   ) {
-
-
-
-
+//التاكد من انو القيمة المدخلة مساوية للقيمة المخزنة في الداتابيز
+                                 if(value.equals(code)) {
+                                     //صفحة الهوم
                                     Intent i = new Intent(VerifySecureCode.this, Profile.class);
-
                                     startActivity(i);
                                 }
                                  else {
@@ -71,7 +74,7 @@ public class VerifySecureCode extends AppCompatActivity {
 
                                              .setTitle("Warn")
 
-                                             .setMessage("Pleaese Enter Your Correct Securecode")
+                                             .setMessage("Invalid  Security Code")
                                              .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                                  @Override
                                                  public void onClick(DialogInterface dialogInterface, int i) {
@@ -83,35 +86,9 @@ public class VerifySecureCode extends AppCompatActivity {
                                              .show();
                                  }
 
-                            }
-                            else{
-                                AlertDialog alertDialog = new AlertDialog.Builder(VerifySecureCode.this)
-
-                                        .setTitle("Warn")
-
-                                        .setMessage("You Aren't Register please create your account")
-                                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialogInterface, int i) {
-
-                                                Intent page = new Intent(VerifySecureCode.this, Register.class);
-                                                startActivity(page);
-                                            }
-                                        })
-                                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialogInterface, int i) {
-
-
-                                            }
-                                        })
-                                        .show();
 
 
 
-
-
-                            }
                         }
 
 
