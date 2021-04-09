@@ -16,6 +16,11 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,15 +28,23 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class Register extends AppCompatActivity {
     EditText etname;
     EditText userid;
     EditText ephone;
 
+
     Button btnRegister;
-    ProgressBar progressBar;
+
     FirebaseDatabase mDatabase;
     DatabaseReference mDatabaseReference ;
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,68 +56,50 @@ public class Register extends AppCompatActivity {
 
 
 
+
         btnRegister.setOnClickListener(new View.OnClickListener() {
 
             @Override
 
             public void onClick(View v) {
+
                 String name = etname.getText().toString();
 
                 String UserId = userid.getText().toString();
                 String Phone = ephone.getText().toString();
 
-                if (name.isEmpty()) {
-                    etname.setError("Please Enter Your Name");
-                    etname.requestFocus();
-                } else if (UserId.isEmpty()) {
-                    userid.setError("PLEASE Enter Your ID#");
-                    userid.requestFocus();
+
+                if( !validateId() | !validatePhoneNo() | !validateUsername()) {
+
+                          return;
                 }
-                else if (UserId.length() >8) {
-                    userid.setError("Id should 8 digit");
-                    userid.requestFocus();
-                }
-                else if (Phone.isEmpty()) {
-                    ephone.setError("PLEASE Enter Your Phone");
-                    ephone.requestFocus();
-                }
+                else {
 
-                else if (name.isEmpty() && UserId.isEmpty() && Phone.isEmpty()) {
-
-                    Toast.makeText(Register.this, " BOTH FIELDS ARE EMPTY!!", Toast.LENGTH_SHORT).show();
-
-                } else if (!(name.isEmpty() && !UserId.isEmpty() && !Phone.isEmpty()) ) {
-
-
-                    User user = new User(name, Integer.parseInt(UserId) ,Integer.parseInt(Phone));
+                    User user = new User(name, Integer.parseInt(UserId) ,Integer.parseInt(Phone) );
                     mDatabase = FirebaseDatabase.getInstance();
                     mDatabaseReference = mDatabase.getReference();
                     DatabaseReference users = mDatabaseReference.child("users");
 
 
+
+
                     users.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot snapshot) {
-                            if (snapshot.child(UserId).exists() ||  snapshot.child(UserId).child(Phone).exists()) {
+                            if (snapshot.child(UserId).exists() ) {
                                 AlertDialog alertDialog = new AlertDialog.Builder(Register.this)
 
                                         .setTitle("Warn")
 
                                         .setMessage("This Account is exist try again")
-                                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialogInterface, int i) {
 
-                                                Toast.makeText(getApplicationContext(),"try again",Toast.LENGTH_LONG).show();
+                                                Log.d("TAG", "okk" );
                                             }
                                         })
-                                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialogInterface, int i) {
 
-                                                Toast.makeText(getApplicationContext(),"Nothing Happened",Toast.LENGTH_LONG).show();
-                                            }
-                                        })
                                         .show();
 
 
@@ -114,31 +109,23 @@ public class Register extends AppCompatActivity {
                                 mDatabaseReference.child("users").child(UserId).setValue(user);
                                 AlertDialog alertDialog = new AlertDialog.Builder(Register.this)
 
-                                        .setTitle("Warn")
+                                        .setTitle("Message")
 
                                         .setMessage("You were Add Succsefully")
-                                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialogInterface, int i) {
 
-                                                Toast.makeText(getApplicationContext(),"Done",Toast.LENGTH_LONG).show();
+                                                String value=UserId;
+
+                                                Intent page = new Intent(Register.this, SecurityCode.class);
+                                               page.putExtra("id",value);
+                                                startActivity(page);
 
                                             }
-                                        })
-                                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                        }).show();
 
-                                                Toast.makeText(getApplicationContext(),"Nothing Happened",Toast.LENGTH_LONG).show();
-                                            }
-                                        })
-                                        .show();
 
-                                String value=Phone;
-                                Toast.makeText(getApplicationContext(),"Done" ,Toast.LENGTH_LONG).show();
-                                Intent i = new Intent(Register.this, MainActivity.class);
-                                i.putExtra("Phone",value);
-                                startActivity(i);
 
 
                             }
@@ -155,6 +142,7 @@ public class Register extends AppCompatActivity {
                     ephone.setText("");
 
 
+
                 }
 
 
@@ -162,6 +150,49 @@ public class Register extends AppCompatActivity {
         });
 
 
+    }
+
+    private Boolean validateUsername() {
+        String val = etname.getText().toString();
+        String noWhiteSpace = "\\A\\w{4,20}\\z";
+
+        if (val.isEmpty()) {
+            etname.setError("Please Enter Your Name");
+            return false;
+        } else if (val.length() >= 15) {
+            etname.setError("Username too long");
+            return false;
+        }else {
+            etname.setError(null);
+            return true;
+        }
+    }
+    private Boolean validatePhoneNo() {
+
+        String val = ephone.getText().toString();
+        if (val.isEmpty()) {
+            ephone.setError("Please Enter Your Phone");
+            return false;
+        } else {
+            ephone.setError(null);
+            return true;
+        }
+    }
+    private Boolean validateId() {
+        String val = userid.getText().toString();
+
+        if (val.isEmpty()) {
+            userid.setError("Please Enter Your ID");
+            return false;
+        } else if(val.length() >8){
+            userid.setError("Id should 8 digit");
+            return false; }
+
+        else {
+
+            userid.setError(null);
+            return true;
+        }
     }
 
 

@@ -42,6 +42,9 @@ public class FingerPrint extends AppCompatActivity {
     private static final String KEY_NAME = "androidHive";
     private Cipher cipher;
     private TextView textView;
+    private String userid;
+
+
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -49,7 +52,8 @@ public class FingerPrint extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_finger_print);
-
+        Intent intent = getIntent();
+        userid  = intent.getStringExtra("id");
 
         // Initializing both Android Keyguard Manager and Fingerprint Manager
         KeyguardManager keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
@@ -91,10 +95,10 @@ public class FingerPrint extends AppCompatActivity {
                             FingerprintManager.CryptoObject cryptoObject = new FingerprintManager.CryptoObject(cipher);
 
                             FingerprintHandler helper = new FingerprintHandler(this);
-                            helper.startAuth(fingerprintManager, cryptoObject);
-
+                            helper.startAuth(fingerprintManager, cryptoObject ,userid);
 
                         }
+
                     }
                 }
             }
@@ -106,7 +110,7 @@ public class FingerPrint extends AppCompatActivity {
     protected void generateKey() {
         try {
             keyStore = KeyStore.getInstance("AndroidKeyStore");
-           // Toast.makeText(getApplicationContext(),"try again" +keyStore,Toast.LENGTH_LONG).show();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -115,7 +119,7 @@ public class FingerPrint extends AppCompatActivity {
         KeyGenerator keyGenerator;
         try {
             keyGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore");
-           // Toast.makeText(getApplicationContext(),"try again" +keyGenerator,Toast.LENGTH_LONG).show();
+
             System.out.println( "this is generate " + keyGenerator);
         } catch (NoSuchAlgorithmException | NoSuchProviderException e) {
             throw new RuntimeException("Failed to get KeyGenerator instance", e);
@@ -146,7 +150,7 @@ public class FingerPrint extends AppCompatActivity {
     public boolean cipherInit() {
         try {
             cipher = Cipher.getInstance(KeyProperties.KEY_ALGORITHM_AES + "/" + KeyProperties.BLOCK_MODE_CBC + "/" + KeyProperties.ENCRYPTION_PADDING_PKCS7);
-           // Toast.makeText(getApplicationContext(),"noooon" +KeyProperties.KEY_ALGORITHM_AES,Toast.LENGTH_LONG).show();
+
         } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
             throw new RuntimeException("Failed to get Cipher", e);
         }
@@ -156,13 +160,11 @@ public class FingerPrint extends AppCompatActivity {
             keyStore.load(null);
             SecretKey key = (SecretKey) keyStore.getKey(KEY_NAME,
                     null);
-           // Toast.makeText(getApplicationContext(),"try " +key,Toast.LENGTH_LONG).show();
+
             System.out.println( "this is key " + key);
 
             cipher.init(Cipher.ENCRYPT_MODE, key);
-           // System.out.println( "this is key " + Cipher.ENCRYPT_MODE);
-          //  byte[] iv = cipher.getIV();
-           // System.out.println( "this is ivvvvvvv " + iv);
+
             return true;
         } catch (KeyPermanentlyInvalidatedException e) {
             return false;

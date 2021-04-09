@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.smartapp">
+
     <uses-permission android:name="android.permission.USE_FINGERPRINT" />
 
     <meta-data
@@ -14,7 +15,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SmartApp">
-        <activity android:name=".FingerPrint"></activity>
+        <activity android:name=".VerifySecureCode"></activity>
+        <activity android:name=".SecurityCode" />
+        <activity android:name=".FingerPrint" />
         <activity android:name=".Profile" />
         <activity android:name=".VerifyPhone" />
         <activity android:name=".Register" />

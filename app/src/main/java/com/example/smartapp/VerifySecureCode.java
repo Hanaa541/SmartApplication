@@ -1,7 +1,5 @@
 package com.example.smartapp;
 
-
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
@@ -11,8 +9,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -21,53 +17,33 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Random;
-
-public class MainActivity extends AppCompatActivity {
-    EditText userid;
-
-    Button loginBtn;
-    TextView btnRegister;
-
-
+public class VerifySecureCode extends AppCompatActivity {
+    private Button btnverify;
+    private EditText editcode;
+    private String userid;
     FirebaseDatabase mDatabase;
     DatabaseReference mDatabaseReference ;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_verify_secure_code);
+        btnverify = (Button) findViewById(R.id.BtnVerify);
+        editcode = (EditText) findViewById(R.id.code);
 
-        setContentView(R.layout.activity_main);
-
-        userid = (EditText) findViewById(R.id.userid);
-        btnRegister = (TextView) findViewById(R.id.createnewac);
-        loginBtn = (Button) findViewById(R.id.btnlogin);
+        Intent intent = getIntent();
+        userid  = intent.getStringExtra("id");
+        System.out.println(userid+ "sssssssssssssssssssssssssssssssssssssss");
 
         mDatabase = FirebaseDatabase.getInstance();
         mDatabaseReference = mDatabase.getReference();
-
-
-        loginBtn.setOnClickListener(new View.OnClickListener() {
-
+        btnverify.setOnClickListener(new View.OnClickListener() {
             @Override
-
             public void onClick(View v) {
-
-
-                String UserId = userid.getText().toString();
-
-                if (UserId.isEmpty()) {
-                    userid.setError("PLEASE Enter Your ID#");
-                    userid.requestFocus();
+                String code =editcode.getText().toString();
+                if(code.isEmpty()){
+                    editcode.setError("Please Enter Your SecureCode");
                 }
-                else if (UserId.length() >8) {
-                    userid.setError("Id should 8 digit");
-                    userid.requestFocus();
-                }
-
-                else  {
+                else {
 
 
                     mDatabaseReference = mDatabase.getReference();
@@ -75,22 +51,41 @@ public class MainActivity extends AppCompatActivity {
                     users.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot snapshot) {
-                            if (snapshot.child(UserId).exists() ) {
-                              //  DataSnapshot childSnapshot = (DataSnapshot) snapshot.getValue();
-                                User post = snapshot.child(UserId).getValue(User.class);
+                            if (snapshot.child(userid).exists() ) {
 
 
-                                String value = String.valueOf( post.phone);
-
-                                Intent i = new Intent(MainActivity.this, VerifyPhone.class);
-                              System.out.println(UserId+ "fffffffffffffffff");
-                                i.putExtra("id",UserId);
-                                i.putExtra("mobile",value);
-                                startActivity(i);
+                                String value = snapshot.child(userid).child("SecureCode").getValue(String.class);
 
 
-                            }else{
-                                AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this)
+                                 if(value.equals(code)   ) {
+
+
+
+
+                                    Intent i = new Intent(VerifySecureCode.this, Profile.class);
+
+                                    startActivity(i);
+                                }
+                                 else {
+                                     AlertDialog alertDialog = new AlertDialog.Builder(VerifySecureCode.this)
+
+                                             .setTitle("Warn")
+
+                                             .setMessage("Pleaese Enter Your Correct Securecode")
+                                             .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                                 @Override
+                                                 public void onClick(DialogInterface dialogInterface, int i) {
+                                                     editcode.setText("");
+
+                                                 }
+                                             })
+
+                                             .show();
+                                 }
+
+                            }
+                            else{
+                                AlertDialog alertDialog = new AlertDialog.Builder(VerifySecureCode.this)
 
                                         .setTitle("Warn")
 
@@ -99,7 +94,8 @@ public class MainActivity extends AppCompatActivity {
                                             @Override
                                             public void onClick(DialogInterface dialogInterface, int i) {
 
-                                                startActivity(new Intent(MainActivity.this,Register.class));
+                                                Intent page = new Intent(VerifySecureCode.this, Register.class);
+                                                startActivity(page);
                                             }
                                         })
                                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -126,36 +122,12 @@ public class MainActivity extends AppCompatActivity {
                     });
 
 
-                    userid.setText("");
-
+                    editcode.setText("");
 
 
                 }
 
-
             }
         });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    }
-
-
-    public void onClick(View v)
-
-    {
-        startActivity(new Intent(MainActivity.this,Register.class));
     }
 }

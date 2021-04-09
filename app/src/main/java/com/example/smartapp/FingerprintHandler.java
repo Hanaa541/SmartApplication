@@ -23,7 +23,7 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
 
 
     private Context context;
-
+    private String id;
 
     // Constructor
     public FingerprintHandler(Context mContext) {
@@ -31,12 +31,15 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
     }
 
 
-    public void startAuth(FingerprintManager manager, FingerprintManager.CryptoObject cryptoObject) {
+    public void startAuth(FingerprintManager manager, FingerprintManager.CryptoObject cryptoObject , String UserId) {
         CancellationSignal cancellationSignal = new CancellationSignal();
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.USE_FINGERPRINT) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         manager.authenticate(cryptoObject, cancellationSignal, 0, this, null);
+
+           id= UserId;
+
     }
 
 
@@ -72,5 +75,9 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
         if(success){
             textView.setTextColor(ContextCompat.getColor(context,R.color.colorPrimaryDark));
         }
+                Intent page = new Intent(context, VerifySecureCode.class);
+        page.putExtra("id",id);
+        context.startActivity(page);
+
     }
 }

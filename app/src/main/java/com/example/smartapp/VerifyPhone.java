@@ -32,7 +32,7 @@ public class VerifyPhone extends AppCompatActivity {
     private EditText  edtOTP;
     private Button verifyOTPBtn;
     private String verificationId;
-
+    private String userid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +40,7 @@ public class VerifyPhone extends AppCompatActivity {
         Intent intent = getIntent();
 
         String phonenum = intent.getStringExtra("mobile");
+        userid  = intent.getStringExtra("id");
         mAuth = FirebaseAuth.getInstance();
 
 
@@ -47,9 +48,9 @@ public class VerifyPhone extends AppCompatActivity {
         edtOTP = findViewById(R.id.idEdtOtp);
         verifyOTPBtn = findViewById(R.id.idBtnVerify);
 
+        System.out.println(userid+ "fffffffffffffffff");
 
-
-        sendVerificationCode( "+966"+phonenum);
+        sendVerificationCode( "+970"+phonenum);
 
 
         verifyOTPBtn.setOnClickListener(new View.OnClickListener() {
@@ -58,7 +59,7 @@ public class VerifyPhone extends AppCompatActivity {
 
                 if (TextUtils.isEmpty(edtOTP.getText().toString())) {
 
-                    Toast.makeText(VerifyPhone.this, "Please enter OTP"+phonenum, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(VerifyPhone.this, "Please enter your Massegcode", Toast.LENGTH_SHORT).show();
                 } else {
 
                     verifyCode(edtOTP.getText().toString());
@@ -76,6 +77,8 @@ public class VerifyPhone extends AppCompatActivity {
                         if (task.isSuccessful()) {
 
                             Intent i = new Intent(VerifyPhone.this, FingerPrint.class);
+                            i.putExtra("id",userid);
+
                             startActivity(i);
                             finish();
                         } else {
