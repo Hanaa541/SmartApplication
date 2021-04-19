@@ -6,15 +6,27 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <View
+    <!--    <View-->
+<!--        android:id="@+id/header_view"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="150dp"-->
+<!--        android:background="@drawable/header">-->
+
+<!--    </View>-->
+
+
+    <ImageView
+
         android:id="@+id/header_view"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:background="@drawable/header">
+        android:layout_width="350dp"
+        android:layout_height="250dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="30dp"
 
-    </View>
 
+        android:background="@drawable/house">
 
+    </ImageView>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -43,8 +55,6 @@
                     android:inputType="number" />
 
 
-
-
                 <Button
                     android:id="@+id/btnlogin"
                     android:layout_width="wrap_content"
@@ -53,7 +63,8 @@
 
                     android:text="Log In"
                     android:textAllCaps="false"
-                    android:textColor="@color/colorWhite" />
+                    android:textColor="@color/black"
+                    app:backgroundTint="#e0e0e0" />
 
                 <TextView
                     android:id="@+id/createnewac"
@@ -64,7 +75,7 @@
                     android:clickable="true"
                     android:onClick="onClick"
                     android:text="Create a new Acount!"
-                    android:textColor="@color/colorPrimaryDark"
+                    android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold" />
             </LinearLayout>

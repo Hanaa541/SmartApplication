@@ -27,6 +27,7 @@ import com.google.firebase.database.DatabaseReference;
 
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.hbb20.CountryCodePicker;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -42,8 +43,8 @@ public class Register extends AppCompatActivity {
     FirebaseDatabase mDatabase;
     DatabaseReference mDatabaseReference ;
 
-
-
+     String CountryPhone;
+    CountryCodePicker ccp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +54,13 @@ public class Register extends AppCompatActivity {
         userid = (EditText) findViewById(R.id.editid);
         ephone = (EditText) findViewById(R.id.editphone);
         btnRegister = (Button) findViewById(R.id.btnsignup);
-
-
-
+        ccp = findViewById(R.id.ccp);
+        ccp.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener() {
+            @Override
+            public void onCountrySelected() {
+                //Toast.makeText(Register.this, "Updated " + ccp.getSelectedCountryCodeWithPlus().concat(ephone.getText().toString()), Toast.LENGTH_SHORT).show();
+            }
+        });
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
 
@@ -68,14 +73,14 @@ public class Register extends AppCompatActivity {
                 String UserId = userid.getText().toString();
                 String Phone = ephone.getText().toString();
 
-
+                CountryPhone =ccp.getSelectedCountryCodeWithPlus().concat(Phone);
                 if( !validateId() | !validatePhoneNo() | !validateUsername()) {
 
                           return;
                 }
                 else {
 
-                    User user = new User(name, Integer.parseInt(UserId) ,Integer.parseInt(Phone) );
+                    User user = new User(name, Integer.parseInt(UserId) ,CountryPhone );
                     mDatabase = FirebaseDatabase.getInstance();
                     mDatabaseReference = mDatabase.getReference();
                     DatabaseReference users = mDatabaseReference.child("users");
@@ -95,16 +100,11 @@ public class Register extends AppCompatActivity {
                                         .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialogInterface, int i) {
-
                                                 Log.d("TAG", "okk" );
                                             }
                                         })
 
                                         .show();
-
-
-
-
                             }else{
                                 mDatabaseReference.child("users").child(UserId).setValue(user);
                                 AlertDialog alertDialog = new AlertDialog.Builder(Register.this)
@@ -155,7 +155,6 @@ public class Register extends AppCompatActivity {
 
     private Boolean validateUsername() {
         String val = etname.getText().toString();
-        String noWhiteSpace = "\\A\\w{4,20}\\z";
 
         if (val.isEmpty()) {
             etname.setError("Please Enter Your Name");
@@ -174,7 +173,12 @@ public class Register extends AppCompatActivity {
         if (val.isEmpty()) {
             ephone.setError("Please Enter Your Phone");
             return false;
-        } else {
+        } else
+        if (val.length() != 9) {
+            ephone.setError("Please Enter 7 digit");
+            return false;
+        } else
+            {
             ephone.setError(null);
             return true;
         }

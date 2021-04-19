@@ -27,7 +27,7 @@ public class SecurityCode extends AppCompatActivity {
         setContentView(R.layout.activity_security_code);
         btncontinue = (Button) findViewById(R.id.btncont);
         textView = (TextView) findViewById(R.id.code);
-        String UserCode = generateRandomPassword(4);
+        String UserCode = generateRandomcode(4);
         textView.setText(UserCode);
 
 
@@ -58,7 +58,7 @@ public class SecurityCode extends AppCompatActivity {
 
 
     }
-    public static String generateRandomPassword(int len)
+    public static String generateRandomcode(int len)
     {
         // ASCII range – alphanumeric (0-9, a-z, A-Z)
         final String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";

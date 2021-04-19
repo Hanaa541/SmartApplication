@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
                                 String value = String.valueOf( post.phone);
 
                                 Intent i = new Intent(MainActivity.this, VerifyPhone.class);
-                              System.out.println(UserId+ "fffffffffffffffff");
+
                                 i.putExtra("id",UserId);
                                 i.putExtra("mobile",value);
                                 startActivity(i);
@@ -135,16 +135,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-
-
-
-
-
-
-
-
-
 
 
 

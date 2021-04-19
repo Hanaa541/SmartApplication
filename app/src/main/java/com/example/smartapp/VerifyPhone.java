@@ -50,7 +50,7 @@ public class VerifyPhone extends AppCompatActivity {
 
 
 
-        sendVerificationCode( "+966"+phonenum);
+        sendVerificationCode( phonenum);
 
 
         verifyOTPBtn.setOnClickListener(new View.OnClickListener() {

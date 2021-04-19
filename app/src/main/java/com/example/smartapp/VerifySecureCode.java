@@ -48,24 +48,15 @@ public class VerifySecureCode extends AppCompatActivity {
                     editcode.setError("Please Enter Your SecureCode");
                 }
                 else {
-
-
                     mDatabaseReference = mDatabase.getReference();
                     DatabaseReference users = mDatabaseReference.child("users");
-
-
                     users.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot snapshot) {
 
-
-                                // استرجاع الكود الموجود في الداتابيز الخاص ب الايدي
-                            // value =قيمة السيكيور كود الخاصة باليوزر
                                 String value = snapshot.child(userid).child("SecureCode").getValue(String.class);
 
-//التاكد من انو القيمة المدخلة مساوية للقيمة المخزنة في الداتابيز
                                  if(value.equals(code)) {
-                                     //صفحة الهوم
                                     Intent i = new Intent(VerifySecureCode.this, Profile.class);
                                     startActivity(i);
                                 }
