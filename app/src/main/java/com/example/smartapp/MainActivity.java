@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onDataChange(DataSnapshot snapshot) {
                             if (snapshot.child(UserId).exists() ) {
-                              //  DataSnapshot childSnapshot = (DataSnapshot) snapshot.getValue();
+                             
                                 User post = snapshot.child(UserId).getValue(User.class);
 
 
