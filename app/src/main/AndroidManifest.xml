@@ -3,6 +3,7 @@
     package="com.example.smartapp">
 
     <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <meta-data
         android:name="com.google.android.safetynet.ATTEST_API_KEY"
@@ -14,8 +15,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.SmartApp">
-        <activity android:name=".VerifySecureCode"></activity>
+        <activity android:name=".LED_activity"></activity>
+        <activity android:name=".Control_IotDevice" />
+        <activity android:name=".VerifySecureCode" />
         <activity android:name=".SecurityCode" />
         <activity android:name=".FingerPrint" />
         <activity android:name=".Profile" />

@@ -74,10 +74,11 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
         textView.setText(e);
         if(success){
             textView.setTextColor(ContextCompat.getColor(context,R.color.colorPrimaryDark));
+            Intent page = new Intent(context, VerifySecureCode.class);
+            page.putExtra("id",id);
+            context.startActivity(page);
         }
-                Intent page = new Intent(context, VerifySecureCode.class);
-        page.putExtra("id",id);
-        context.startActivity(page);
+
 
     }
 }
