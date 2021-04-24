@@ -57,7 +57,7 @@ public class VerifySecureCode extends AppCompatActivity {
                                 String value = snapshot.child(userid).child("SecureCode").getValue(String.class);
 
                                  if(value.equals(code)) {
-                                    Intent i = new Intent(VerifySecureCode.this, Profile.class);
+                                    Intent i = new Intent(VerifySecureCode.this, Home.class);
                                     startActivity(i);
                                 }
                                  else {

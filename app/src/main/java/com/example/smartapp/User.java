@@ -5,7 +5,9 @@ public class User {
     public  int userid ;
     public  String phone ;
 
-User(){
+
+
+    User(){
 
 }
 

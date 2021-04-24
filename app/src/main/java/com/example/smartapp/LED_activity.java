@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
+import java.util.concurrent.ExecutionException;
+
 public class LED_activity extends AppCompatActivity {
     private static Button on1,off1 ;
     private static ImageView LampImage ;
@@ -23,38 +25,28 @@ public class LED_activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_led_activity);
-
+// للوصول للبتن الموجودين في الديزاين عن طريق الid
         on1=(Button) findViewById(R.id.but1on);
         off1=(Button) findViewById(R.id.but1off);
-        seekBar = (SeekBar) findViewById(R.id.seekBar);
+
+
+        //لتغغير الايمج
         LampImage = (ImageView) findViewById(R.id.image);
 
-        seekBar.setMax(255);
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                Slider process1 = new Slider((Integer.toString(progress)));
-                process1.execute();
 
-            }
 
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
 
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
+  
+        //فنكشن تنفذ لما زر الون ينضغط
         on1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+//تغيير الصورة
                 LampImage.setBackground(ContextCompat.getDrawable(LED_activity.this, R.drawable.lampon));
+                //يشغل اللمبة
                 on1 process1 = new on1();
                 process1.execute();
+
 
             }
         });
